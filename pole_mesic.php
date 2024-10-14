@@ -8,5 +8,20 @@
 
 //reseni
 
+$months = array("leden", "únor", "březen", "duben", "květen", "červen", "červenec", "srpen", "září", "říjen", "listopad", "prosinec");
+
+echo "Měsíce: ";
+foreach($months as $month)
+{
+	echo $month . " ";
+}
+echo "<br>";
+echo "Měsíce 6-12: ";
+for($i = 6; $i < 12; $i++)
+{
+	echo $months[$i] . " ";
+}
+echo "<br>";
+
 ?>
 
