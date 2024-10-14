@@ -77,8 +77,38 @@ $bitcoinPrices = [
 
 // reseni:
 
+$cenaNakupu = 50;
+$cenaNakupuCelkem = 0;
+$nakoupenoBtcCelkem = 0;
+$priceAverage = 0;
+$lastPrice = 0;
+$minimalPrice = 999999999999999999;
+$maximalPrice = 0;
+foreach($bitcoinPrices as $yearmonth => $price)
+{
+	$nakoupenoBtc = $cenaNakupu / $price;
+	$nakoupenoBtcCelkem += $nakoupenoBtc;
+	$cenaNakupuCelkem += $cenaNakupu;
+	$priceAverage += $price;
+	$lastPrice = $price;
+	
+	if($price > $maximalPrice)
+		$maximalPrice = $price;
+	if($price < $minimalPrice)
+		$minimalPrice = $price;
+}
 
+$priceAverage = $priceAverage / sizeof($bitcoinPrices);
+$aktualniHodnotaBtcNaUsd = $lastPrice * $nakoupenoBtcCelkem;
+$aktualniHodnotaBtcNaKc = $lastPrice * $nakoupenoBtcCelkem * 23.15;
 
+echo "Vlastním $nakoupenoBtcCelkem BTC za které jsem utratil $cenaNakupuCelkem USD.<br>";
+echo "Průměrná cena BTC byla $priceAverage USD<br>";
+echo "Nejmenší cena BTC je $minimalPrice<br>";
+echo "Největší cena BTC je $maximalPrice<br>";
+echo "Aktuální hodnota držených BTC je $aktualniHodnotaBtcNaUsd USD ($aktualniHodnotaBtcNaKc CZK)<br>";
+
+echo "<br><br><br>";
 
 
 /**
@@ -148,5 +178,33 @@ $marketData = [
 ];
 
 // reseni:
+$lowPurchaseTotal = 0;
+$highPurchaseTotal = 0;
+$finalPriceTotal = 0;
+$months = count($marketData);
+
+// Loop through each month's data
+foreach ($marketData as $date => $data) {
+    $lowPurchaseTotal += $data['low'];   // Sum up the lowest prices
+    $highPurchaseTotal += $data['high']; // Sum up the highest prices
+    $finalPriceTotal += $data['price'];  // Sum up the closing prices of each month
+}
+
+// Calculate the average cost of purchasing at low and high prices
+$avgLowPurchase = $lowPurchaseTotal / $months;
+$avgHighPurchase = $highPurchaseTotal / $months;
+
+// KPI: Difference between low and high average purchases
+$purchaseDifference = $avgHighPurchase - $avgLowPurchase;
+
+// KPI: Percentage difference
+$percentageDifference = ($purchaseDifference / $avgLowPurchase) * 100;
+
+// Output the results
+echo "Average Purchase Price (Low): $" . number_format($avgLowPurchase, 2) . "<br>";
+echo "Average Purchase Price (High): $" . number_format($avgHighPurchase, 2) . "<br>";
+echo "Difference between Low and High Purchase: $" . number_format($purchaseDifference, 2) . "<br>";
+echo "Percentage Difference: " . number_format($percentageDifference, 2) . "%<br>";
+
 
 ?>

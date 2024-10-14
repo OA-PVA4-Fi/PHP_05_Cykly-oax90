@@ -39,5 +39,22 @@ $city = array(
 );
 
 //reseni
+?>
+<table>
+  <tr>
+    <th>Pořadové číslo</th>
+    <th>Stát</th>
+    <th>Hlavní město</th>
+  </tr>
+<?php
+$i = 1;
+
+ksort($city);
+foreach($city as $countryName => $cityName)
+{
+	echo "<tr><td>$i</td><td>$countryName</td><td>$cityName</td></tr>";
+	$i++;
+}
 
 ?>
+</table>
